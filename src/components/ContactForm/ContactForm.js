@@ -1,10 +1,15 @@
-import React, { useState } from "react";
 import s from './ContactForm.module.css'
+import { useState } from 'react';
+import { useDispatch, useSelector  } from 'react-redux';
+import { getContacts } from '../../redux/phonebook/selectors';
+import { addContactAction } from '../../redux/phonebook/actions';
 
-export default function ContactForm({onSubmit}) {
+export default function ContactForm() {
     
     const [name, setName] = useState('');
     const [number, setNumber] = useState('');
+    const contacts = useSelector(getContacts);
+    const dispatch = useDispatch();
        
     const handleChange = e => {
         const { name, value } = e.target;
@@ -23,10 +28,17 @@ export default function ContactForm({onSubmit}) {
     
     const handleSubmit = event => { 
         event.preventDefault();
-        onSubmit({ name, number });
-       
-        setName('')
-        setNumber('')
+        const repeatName = contacts.find(contact => {
+			return contact.name.toLowerCase() === name.toLowerCase();
+		});
+		if (!repeatName) {
+			dispatch(addContactAction(name, number));
+            setName('')
+            setNumber('')
+            return
+        }
+        alert(`${name} is already in contacts`);
+			return;
     }
 
     

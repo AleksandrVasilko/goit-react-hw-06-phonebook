@@ -8,7 +8,7 @@ import appStore from './redux/store';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={appStore.persistor}>
+    <Provider store={appStore.store}>
       <PersistGate loading={null} persistor={appStore.persistor}>
         <App />
       </PersistGate>
